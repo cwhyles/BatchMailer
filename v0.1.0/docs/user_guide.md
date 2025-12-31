@@ -1,0 +1,631 @@
+# BatchMailer User Guide
+
+Version 1.0  
+Controlled batch email module for Dolibarr ERP/CRM
+
+Copyright © 2025–2026 Colin Whyles  
+Licensed under the GNU General Public License v3 or later
+
+---
+
+## Contents
+
+- [1. Introduction](#1-introduction)
+- [2. Quick Overview](#2-quick-overview)
+- [3. Preparing Your Recipient Data](#3-preparing-your-recipient-data)
+- [4. Creating and Managing Email Templates](#4-creating-and-managing-email-templates)
+- [5. Review, Approval & Dry-Run](#5-review-approval--dry-run)
+- [6. Sending Emails in Batches](#6-sending-emails-in-batches)
+- [7. Logs, Recovery & Troubleshooting](#7-logs-recovery--troubleshooting)
+- [8. Admin Tools & Safety Controls](#8-admin-tools--safety-controls)
+- [9. Frequently Asked Questions](#9-frequently-asked-questions)
+- [10. Best Practices and Warnings](#10-best-practices-and-warnings)
+- [11. Appendix](#11-appendix)
+
+---
+
+<a id="1-introduction"></a>
+## 1. Introduction
+
+BatchMailer is designed to help you send **small to medium-sized batches** of personalised emails safely, clearly, and with confidence.
+
+It is not a marketing tool, and it is not designed for high-volume or automated mailing lists. Instead, it focuses on **control, transparency, and recoverability**, so that you always know what will be sent, to whom, and when.
+
+### 1.1 What BatchMailer Is
+
+BatchMailer is a Dolibarr module for sending personalised emails using:
+
+- A **recipient list** (CSV file)
+- An **email template**
+- A **controlled batch process**
+
+Typical uses include:
+
+- Membership renewals
+- Event reminders
+- Administrative notices
+- Small announcements to known contacts
+
+Each email is:
+
+- Individually generated
+- Logged permanently
+- Sent in manageable batches
+
+BatchMailer is especially suited to organisations that:
+
+- Send emails infrequently
+- Need accountability and audit trails
+- Prefer human oversight over automation
+
+### 1.2 Design Principles
+
+BatchMailer is built around a small number of clear principles.
+
+**Safety First**
+
+- Emails are never sent accidentally
+- Sending requires explicit approval
+- Campaigns can be paused, aborted, or restarted
+- Dry runs are mandatory before sending
+
+**Transparency**
+
+You always see:
+
+- What will be sent
+- How many emails are involved
+- How far a campaign has progressed
+- Every attempt is written to a permanent log file
+
+**Human Control**
+
+- No background or “fire-and-forget” sending
+- Batches are triggered manually
+- You decide when to continue
+
+**Forgiveness**
+
+- Mistakes can be stopped early
+- Partial sends are clearly reported
+- Logs allow you to understand exactly what happened
+- You can restart cleanly when needed
+
+**Non-Technical Usability**
+
+- No programming knowledge required
+- Clear messages explain what to do next
+- Common actions are guided step by step
+- Advanced tools are available but not intrusive
+
+---
+
+BatchMailer assumes that **you want to stay in control**, even if that means going a little more slowly. That trade-off is deliberate — and it is what makes BatchMailer reliable.
+
+---
+
+<a id="2-quick-overview"></a>
+## 2. Quick Overview
+
+### 2.1 Typical Workflow
+
+BatchMailer is designed to guide you through a safe, repeatable process for sending emails to a selected group of recipients. The workflow is intentionally structured to prevent accidental mass sending and to give you clear visibility at every stage.
+
+A typical BatchMailer workflow looks like this:
+
+1. **Prepare your recipient list**
+   - Export member or contact data from Dolibarr (or another source) as a CSV file.
+   - Upload or select the CSV file in the *Prepare recipient list* tab.
+   - Review the preview to confirm headers, email validity, and row counts.
+
+2. **Create or select a template**
+   - Choose an existing email template, or create a new one.
+   - Select which CSV fields the template will use.
+   - Write and format the email body using placeholders such as `{{firstname}}` or `{{url}}`.
+
+3. **Preview and approve**
+   - Preview how the email will look for real recipients.
+   - Explicitly approve the campaign once you are satisfied.
+   - Run a dry-run to verify counts and detect obvious problems before sending.
+
+4. **Send in batches**
+   - Choose a batch size appropriate for your mailing.
+   - Send the first batch and review the results.
+   - Continue sending further batches until the campaign is complete.
+
+5. **Review results**
+   - View detailed logs showing which emails were attempted, sent, or failed.
+   - Download or retain logs for audit and record-keeping.
+
+At any point during sending, you can **abort** the campaign if something looks wrong. BatchMailer records exactly what has already been sent, so you always know where you stand.
+
+This structured workflow ensures:
+- No emails are sent without explicit approval
+- Progress is visible and auditable
+- Problems can be detected early and safely handled
+
+### 2.2 What You Need Before You Start
+
+Before using BatchMailer for the first time, it is helpful to ensure a few basic requirements are in place. BatchMailer is designed to work with minimal setup, but preparing these items in advance will make the process smooth and predictable.
+
+#### A recipient list (CSV file)
+
+BatchMailer sends emails based on a CSV (Comma-Separated Values) file that contains your recipients.
+
+Your CSV file must:
+- Contain a **header row** (column names in the first row)
+- Include at least one column named `email`
+- Use one row per recipient
+
+Other columns are optional and can be used for personalisation, such as:
+- `firstname`
+- `lastname`
+- `url`
+- or any custom fields you choose
+
+If you are using Dolibarr, you can generate suitable CSV files using the built-in **Exports** feature. BatchMailer provides a direct link to this tool from the *Prepare recipient list* tab.
+
+#### An email template
+
+BatchMailer requires an email template before sending can begin.
+
+A template defines:
+- The email subject
+- The email body (HTML)
+- Which CSV fields are used
+- Which fields are required for sending
+
+Templates use placeholders in the form:
+
+`{{fieldname}}`
+
+For example:
+- `{{firstname}}`
+- `{{email}}`
+- `{{url}}`
+
+Only the `email` field is always required. All other fields are optional and controlled by the template.
+
+Templates can be reused across campaigns and edited at any time before approval.
+
+#### Appropriate permissions
+
+To use BatchMailer, your Dolibarr user account must have permission to:
+- Access the BatchMailer module
+- Send emails
+
+Some administrative features (such as safety overrides and campaign recovery tools) are restricted to administrators and appear in the **Admin** tab.
+
+#### A moment to review and approve
+
+BatchMailer is intentionally not a “fire-and-forget” tool.
+
+Before any emails are sent, you will always be required to:
+- Preview the message
+- Explicitly approve the campaign
+- Confirm sending using batch controls
+
+This extra step is deliberate and protects both you and your recipients.
+
+Once these prerequisites are met, you are ready to begin preparing your campaign.
+
+---
+
+<a id="3-preparing-your-recipient-data"></a>
+## 3. Preparing Your Recipient Data
+
+BatchMailer sends emails to a **recipient list**. This list tells BatchMailer who to email and what personal information can be inserted into the message (such as names or links).
+
+This section explains what that list is, how to create it, and how to prepare it correctly.
+
+### 3.1 What a Recipient List Is
+
+A recipient list is simply a table of information, with:
+
+- **One row per recipient**
+- **One column per piece of information**, such as:
+  - Email address
+  - First name
+  - Last name
+  - Membership reference
+  - Payment link
+
+BatchMailer reads this table and uses it to personalise each email.
+
+### 3.2 Creating a Recipient List from Dolibarr
+
+Dolibarr already includes an excellent export tool for creating recipient lists.
+
+Typical steps are:
+
+1. Go to **Members / Adherents**
+2. Use filters to select the members you want to contact
+3. Choose **Export**
+4. Select the fields you want to include
+5. Export the result as **CSV** or **Excel**
+
+BatchMailer works best with **CSV files**, but Excel files must be saved as CSV.
+
+> Tip: You do not need to include every available field - only include what you plan to use in your email.
+
+### 3.3 CSV Format Explained
+
+A CSV file is simply:
+- A plain text file
+- With rows separated by line breaks
+- And columns separated by commas
+
+You can open a CSV file in Excel, LibreOffice, Google Sheets, or a simple text editor.
+
+Example:
+
+```text
+email,firstname,lastname
+jane@example.com,Jane,Smith
+john@example.com,John,Brown
+```
+
+Important points:
+- The first row must contain column names (headers)
+- Each header becomes a field you can use in your email template
+- Header names are not case-sensitive
+
+### 3.4 Required and Optional Fields
+
+- `email` is the only field that is always required.
+- All other fields are optional (unless you mark them required in the template).
+
+If a field exists in the CSV but is not used in the template, that is fine.
+
+### 3.5 Uploading or Selecting a CSV File
+
+In the **Prepare recipient list** tab you can upload a new CSV file, or select a previously uploaded file.
+
+Once selected, BatchMailer will:
+- Check that the file is readable
+- Detect the column headers
+- Preview a small number of rows
+- Warn you about common problems (missing email, invalid addresses, duplicates)
+
+Nothing is sent at this stage.
+
+### 3.6 Common Issues and How BatchMailer Helps
+
+BatchMailer actively protects you from mistakes:
+
+- Missing `email` column -> clearly flagged
+- Invalid email addresses -> listed for review
+- Duplicate addresses -> detected and reported
+- Empty optional fields -> allowed, but visible in preview
+
+---
+
+<a id="4-creating-and-managing-email-templates"></a>
+## 4. Creating and Managing Email Templates
+
+An email template defines what your message says and how recipient data is inserted.
+
+### 4.1 What an Email Template Contains
+
+Each template consists of:
+
+- Name (for your reference)
+- Description (optional notes)
+- Subject line (can include placeholders)
+- From name and email address
+- HTML message body
+- Optional footer (if enabled)
+- Field selections (which CSV fields are used, and which are required)
+
+### 4.2 Creating a New Template
+
+1. Go to the **Templates** tab
+2. Click **Create New Template**
+3. Enter name, subject, and sender details
+4. Write your email content
+5. Save the template
+
+### 4.3 Writing the Email Content
+
+BatchMailer uses an HTML editor for the main email body. You do not need to know HTML.
+
+A plain-text version of the email is automatically generated for recipients whose email software does not support HTML.
+
+### 4.4 Using Fields from Your Recipient Data
+
+Fields from your CSV file can be inserted using placeholders like:
+
+`{{firstname}}`
+
+Example:
+
+```text
+Dear {{firstname}},
+```
+
+> Tip: Placeholders must match the column names in your CSV. BatchMailer normalises case and spacing when matching fields.
+
+### 4.5 Selecting Fields Safely
+
+BatchMailer detects CSV headers and shows them in a field selection table. For each field, you can choose:
+
+- Use
+- Required
+
+If a required field is missing for a recipient, BatchMailer will warn you before sending.
+
+### 4.6 Required vs Optional Fields
+
+- `email` is always required.
+- Mark other fields required only if the email would not make sense without them.
+
+### 4.7 Editing, Copying, and Deleting Templates
+
+From the template list you can:
+- Edit
+- Copy
+- Delete
+
+Deleting a template does not affect past logs or sent emails.
+
+### 4.8 Template Safety Checks
+
+BatchMailer checks:
+- A name and subject are present
+- At least one message body exists
+- Email addresses are valid
+- Required fields are defined correctly
+
+---
+
+<a id="5-review-approval--dry-run"></a>
+## 5. Review, Approval & Dry-Run
+
+Before any emails can be sent, BatchMailer requires you to review and approve the campaign.
+
+### 5.1 Reviewing Your Campaign
+
+Once you have selected a recipient list and a template, go to the **Send batch** tab.
+
+You will see:
+- The selected recipient list
+- The selected template
+- How many emails will be sent
+- Any detected issues
+
+### 5.2 Approval Step
+
+BatchMailer will not allow sending until the campaign is explicitly approved.
+
+> Safety note: Approval is required every time you start a new campaign.
+
+### 5.3 Dry-Run (Recommended)
+
+A dry-run:
+- Does not send any emails
+- Simulates the campaign
+- Reports how many emails would be sent
+- Identifies invalid or missing email addresses
+
+### 5.4 Understanding Dry-Run Results
+
+The dry-run report includes:
+- Total rows
+- Emails to send
+- Invalid email addresses
+- Duplicates (if any)
+
+### 5.5 Ready to Send
+
+Once approved and dry-run has completed successfully, BatchMailer will show **Ready to Send**.
+
+---
+
+<a id="6-sending-emails-in-batches"></a>
+## 6. Sending Emails in Batches
+
+BatchMailer sends emails in controlled batches.
+
+### 6.1 What Is a Batch?
+
+If you have 120 emails and a batch size of 20, BatchMailer will send 6 batches of 20 emails.
+
+### 6.2 Choosing a Batch Size
+
+Typical values:
+- 1-5: careful testing
+- 10-25: normal use
+- 50+: only if your email setup supports it
+
+### 6.3 Sending the First Batch
+
+Click **Send Batch**. BatchMailer will send only the selected number of emails and record results in the log.
+
+### 6.4 Sending Subsequent Batches
+
+BatchMailer continues from where it stopped and does not resend previously sent recipients.
+
+### 6.5 Aborting a Campaign
+
+Click **Abort Sending** to stop further batches. Already sent emails remain sent.
+
+### 6.6 After Sending Completes
+
+A summary is shown, and full details are available in the logs.
+
+### 6.7 Where to Find Logs and Controls
+
+Logs and safety controls are available from the **Admin** tab.
+
+---
+
+<a id="7-logs-recovery--troubleshooting"></a>
+## 7. Logs, Recovery & Troubleshooting
+
+### 7.1 What Is a Campaign Log?
+
+A campaign log is a text record created each time emails are sent.
+
+### 7.2 Viewing Logs
+
+Logs can be accessed from the **Admin** tab. For each log you can:
+- View
+- Download
+- Delete
+
+### 7.3 Understanding Log Entries
+
+Typical entries:
+
+```text
+ATTEMPT | member@example.com
+SUCCESS | member@example.com
+```
+
+### 7.4 What to Do If a Campaign Is Aborted
+
+Review the log, fix the issue, then resume or restart safely.
+
+### 7.5 Resuming or Restarting Safely
+
+Resuming continues from where it stopped. Restarting should normally use a new CSV or template.
+
+### 7.6 Common Issues and What They Mean
+
+- "Invalid email": malformed or missing address
+- Batch stops unexpectedly: campaign may have been aborted - check Admin panel
+- No emails sent: approval/dry-run incomplete, or sending locked
+
+### 7.7 When to Check the Admin Tab
+
+If anything feels unclear or unexpected, check the Admin tab first.
+
+---
+
+<a id="8-admin-tools--safety-controls"></a>
+## 8. Admin Tools & Safety Controls
+
+### 8.1 The Purpose of the Admin Tab
+
+The Admin tab answers:
+1. What is happening right now?
+2. What has already happened?
+3. How do I recover safely?
+
+### 8.2 Campaign State Panel
+
+Shows whether a campaign is active, progress, and whether sending is locked.
+
+### 8.3 Send Lock
+
+Prevents emails being sent until unlocked by an administrator.
+
+### 8.4 Admin Override
+
+Advanced option to bypass certain protections in exceptional cases.
+
+### 8.5 Log Management
+
+View, download, and delete log files.
+
+---
+
+<a id="9-frequently-asked-questions"></a>
+## 9. Frequently Asked Questions
+
+### 9.1 Sending and Delivery
+
+- BatchMailer sends in batches for safety and mail server limits.
+- You should not close your browser while a batch is sending.
+
+### 9.2 Templates
+
+- Templates can be reused.
+- Changes apply to future batches only.
+
+### 9.3 CSV Issues
+
+- CSV must have a header row and an `email` column.
+- Extra columns are fine.
+
+### 9.4 Logs and Recovery
+
+- Logs are accessible from the Admin tab and are your source of truth.
+
+---
+
+<a id="10-best-practices-and-warnings"></a>
+## 10. Best Practices and Warnings
+
+- Always run a dry-run.
+- Start with small batches.
+- Treat CSV files as read-only during sending.
+- Use logs as your source of truth.
+- When in doubt, stop and review.
+
+---
+
+<a id="11-appendix"></a>
+## 11. Appendix
+
+### 11.1 CSV Examples
+
+Minimal:
+
+```text
+email
+member1@example.com
+member2@example.com
+member3@example.com
+```
+
+Typical:
+
+```text
+email,firstname,lastname
+jane.smith@example.com,Jane,Smith
+john.brown@example.com,John,Brown
+```
+
+Payment link example:
+
+```text
+email,firstname,lastname,url
+jane.smith@example.com,Jane,Smith,https://example.org/pay?id=123
+john.brown@example.com,John,Brown,https://example.org/pay?id=456
+```
+
+### 11.2 Template JSON Example
+
+```json
+{
+  "name": "Membership Renewal",
+  "description": "Annual renewal reminder",
+  "subject": "Your membership renewal",
+  "from_name": "Your Membership Society",
+  "from_email": "memsec@example.org",
+  "reply_to": "memsec@example.org",
+  "body_html": "<p>Dear {{firstname}} {{lastname}},</p><p>Please renew here: <a href=\"{{url}}\">Renew now</a></p>",
+  "body_text": "Dear {{firstname}} {{lastname}},\n\nPlease renew here:\n{{url}}",
+  "fields": {
+    "email": { "use": true, "required": true },
+    "firstname": { "use": true, "required": false },
+    "lastname": { "use": true, "required": false },
+    "url": { "use": true, "required": true }
+  },
+  "required_fields": ["email", "url"],
+  "include_logo": false,
+  "include_footer": true
+}
+```
+
+### 11.3 Glossary
+
+- **Batch**: A group of emails sent together.
+- **Campaign**: A complete send operation using one CSV and one template.
+- **CSV**: Comma-Separated Values - a plain text list with a header row.
+- **Dry run**: A simulation that checks data and templates without sending emails.
+- **Field/placeholder**: A value taken from the CSV and inserted into the email, e.g. `{{firstname}}`.
+- **Log file**: A permanent record of what was attempted, sent, or failed.
+- **Offset**: The number of rows already processed.
+- **Template**: The email content and configuration used for a campaign.

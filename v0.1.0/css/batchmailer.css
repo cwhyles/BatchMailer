@@ -1,0 +1,205 @@
+.batchmailer-quickstart {
+    margin: 1em 0;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+}
+
+.quickstart-toggle {
+    background: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.quickstart-content {
+    margin-top: 0.8em;
+}
+
+.batchmailer-quickstart ol {
+    margin-left: 1.2em;
+}
+
+.batchmailer-quickstart .current-step {
+    font-weight: bold;
+    color: #000;
+}
+
+.quickstart-intro {
+    margin: 0.5em 0 0.8em;
+    font-style: italic;
+}
+
+
+.status-box {
+  border: 1px solid #ccc;
+  padding: 12px;
+  background: #f8f8f8;
+  max-width: 600px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: #ddd;
+  margin: 6px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4caf50;
+}
+
+.batchmailer-admin-actions {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    margin: 16px 0;
+}
+
+.batchmailer-admin-action {
+    flex: 1;
+}
+
+/* Optional: keep buttons aligned at bottom */
+.batchmailer-admin-action form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Admin help panel */
+.batchmailer-admin-help {
+    margin: 12px 0;
+}
+
+.admin-help-toggle {
+    background: #f4f6f8;
+    border: 1px solid #ddd;
+    padding: 6px 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.admin-help-content {
+    border-left: 4px solid #bbb;
+    background: #fafafa;
+    padding: 10px 14px;
+    margin-top: 6px;
+    font-size: 0.95em;
+}
+
+/* Style log files (when converted to HTML) */
+.batchmailer-log-view {
+    font-family: monospace;
+    font-size: 13px;
+    background: #fcfcfc;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.log-header {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.log-attempt {
+    color: #555;
+}
+
+.log-success {
+    color: #1a7f37;
+}
+
+.log-failed {
+    color: #b00020;
+    font-weight: bold;
+}
+
+.log-line {
+    color: #444;
+}
+
+.log-blank {
+    height: 6px;
+}
+
+.batchmailer-log-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: #fafafa;
+}
+
+.batchmailer-log-block {
+    margin-bottom: 6px;
+}
+
+.batchmailer-log-block summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 6px;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+}
+
+.batchmailer-log-view {
+    font-family: monospace;
+    font-size: 13px;
+    padding: 8px;
+}
+
+.log-copy-btn {
+    float: right;
+    font-size: 11px;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+/* Help panel */
+
+.batchmailer-help {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  height: calc(100vh - 60px);
+  width: 30%;
+  background: #f8f8f8;
+  border-left: 1px solid #ccc;
+  box-shadow: -2px 0 6px rgba(0,0,0,0.08);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+#batchmailer-help-panel {
+  display: flex;
+}
+
+#batchmailer-help-panel.hidden {
+  display: none;
+}
+
+.batchmailer-help-header {
+  padding: 10px 12px;
+  background: #eaeaea;
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#batchmailer-help-frame {
+  flex: 1 1 auto;
+  min-height: 100%;
+  width: 100%;
+  background: #f8f8f8;
+  border: 0;
+}
+
+.safari-help {
+  font-style: italic;
+  opacity: 0.85;
+}
